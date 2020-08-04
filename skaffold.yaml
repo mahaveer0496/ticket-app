@@ -1,0 +1,25 @@
+# apiVersion for skaffold config
+apiVersion: skaffold/v2alpha3
+kind: Config
+# deployment directory containing k8 files
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+# setup build instructions
+build:
+  local:
+    # dont push the build
+    push: false
+  artifacts:
+    # images to use
+    - image: auth
+      # the destination of Dockerfile
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      # whats to sync, this section means whenever anything in src changes, take them and put it into container
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
