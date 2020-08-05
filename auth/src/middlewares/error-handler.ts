@@ -1,6 +1,10 @@
 import { ErrorRequestHandler } from 'express'
+import { CustomError } from '../errors/custom-error'
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  // console.log(err)
-  res.status(400).send({ msg: 'wroonggg' })
+export const errorHandler: ErrorRequestHandler = (err, req, res) => {
+  if (err instanceof CustomError) {
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() })
+  }
+
+  res.status(500).send({ errors: [{ message: 'Something went wrong' }] })
 }
