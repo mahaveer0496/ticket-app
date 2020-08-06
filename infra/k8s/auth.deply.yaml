@@ -15,10 +15,16 @@ spec:
       containers:
         - name: auth
           image: auth
-          # resources:
-          #   limits:
-          #     memory: '128Mi'
-          #     cpu: '500m'
+          env:
+            # k create secret generic jwt-secret --from-literal=JWT_KEY=asdf command to create a SECRET object
+            # name thats going to be used INSIDE the container
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  # --from-literal part
+                  key: JWT_KEY
+                  # the name that we used
+                  name: jwt-secret
           ports:
             - containerPort: 3000
 ---
