@@ -8,7 +8,7 @@ import { Password } from '../services/password'
 
 const router = express.Router()
 
-router.get(
+router.post(
   '/api/users/signin',
   [
     body('email').isEmail().withMessage('Email must be valid'),
@@ -18,6 +18,7 @@ router.get(
   async (req: Request, res: Response) => {
     const { email, password } = req.body
     const existingUser = await User.findOne({ email })
+    console.log('wtf man')
 
     if (!existingUser) {
       throw new BadRequestError('Invalid credentials')
