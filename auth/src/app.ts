@@ -20,10 +20,6 @@ app.use(
   }),
 )
 
-app.get('/', (req, res) => {
-  res.send('auth service home')
-})
-
 app.use(currentUserRouter)
 app.use(signinRouter)
 app.use(signoutRouter)
