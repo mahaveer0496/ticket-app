@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: auth
+          env:
+            # k create secret generic jwt-secret --from-literal=JWT_KEY=asdf command to create a SECRET object
+            # name thats going to be used INSIDE the container
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  # --from-literal part
+                  key: JWT_KEY
+                  # the name that we used
+                  name: jwt-secret
+            - name: MONGO_URI
+              value: mongodb://auth-mongo-srv:27017/auth
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  selector:
+    app: auth
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: auth
+      protocol: TCP

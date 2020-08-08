@@ -25,7 +25,7 @@ export const currentUser: RequestHandler = (req, res, next) => {
       process.env.JWT_KEY as string,
     ) as UserPayload
     req.currentUser = payload
-    res.send({ currentUser: payload })
+    // res.send({ currentUser: payload })
   } catch (error) {}
 
   next()
