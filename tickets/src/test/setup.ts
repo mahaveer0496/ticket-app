@@ -41,7 +41,7 @@ global.signin = () => {
   const session = JSON.stringify({
     jwt: jwt.sign(
       {
-        id: '13123',
+        id: new mongoose.Types.ObjectId().toHexString(),
         email: 'teast@tast.com',
       },
       process.env.JWT_KEY!,
